@@ -1,24 +1,39 @@
-import logo from './logo.svg';
 import './App.css';
+
+import React from "react";
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route,
+    Link
+} from "react-router-dom";
+
+import Header from "./layout/Header/Header";
+import Footer from "./layout/Footer/Footer";
+import PizzaListPage from "./pages/PizzaListPage/PizzaListPage.lazy";
+import PizzaPage from "./pages/PizzaPage/PizzaPage.lazy";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <div className="App">
+          <Header />
+          <main>
+              <Router>
+                  <Switch>
+                      <Route path="/">
+                          <PizzaListPage />
+                      </Route>
+                      <Route path="/pizza">
+                          <PizzaListPage />
+                      </Route>
+                      <Route path="/pizza/:id">
+                          <PizzaPage />
+                      </Route>
+                  </Switch>
+              </Router>
+          </main>
+          <Footer />
+      </div>
   );
 }
 
