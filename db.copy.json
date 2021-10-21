@@ -115,7 +115,7 @@
       "price": 2.5
     }
   ],
-  "ingredients": [
+  "ingredient": [
     {
       "id": "98a66054-9eba-4de2-8580-d278d616613a",
       "name": "sos",

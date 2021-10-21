@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState, useEffect } from "react";
 import './PizzaListPage.css';
-import {BrowserRouter, Route, Switch, useRouteMatch} from "react-router-dom";
+import {Route, Switch, useRouteMatch} from "react-router-dom";
 import PizzaCard from "../../components/PizzaCard/PizzaCard";
 import Api from '@api/api'
 import PizzaListItem from "../../components/PizzaListItem/PizzaListItem";
@@ -23,7 +23,7 @@ const PizzaListPage = () => {
     }, []);
 
     const pizzaListUi = pizzaList.map((pizza) => {
-        return <PizzaListItem pizza={pizza} />
+        return <PizzaListItem key={pizza.id} pizza={pizza} />
     })
 
     return (
@@ -37,16 +37,13 @@ const PizzaListPage = () => {
                     { pizzaListUi }
                 </ul>
             </div>
-
-            <BrowserRouter>
-                <Switch>
-                    <Route exact path={`${path}/:pizzaId`}>
-                        <div className="col-span-1 md:col-span-8">
-                            <PizzaCard />
-                        </div>
-                    </Route>
-                </Switch>
-            </BrowserRouter>
+            <Switch>
+                <Route exact path={`${path}/:pizzaId`}>
+                    <div className="col-span-1 md:col-span-8">
+                        <PizzaCard />
+                    </div>
+                </Route>
+            </Switch>
         </div>
     )
 };
