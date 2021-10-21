@@ -1,0 +1,7 @@
+{
+  "pizza": [
+    {"id": 1, "name": "Pizza1"},
+    {"id": 1, "name": "Pizza2"},
+    {"id": 1, "name": "Pizza3"}
+  ]
+}
