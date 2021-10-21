@@ -2,37 +2,33 @@ import './App.css';
 
 import React from "react";
 import {
-    BrowserRouter as Router,
+    BrowserRouter,
     Switch,
     Route,
-    Link
 } from "react-router-dom";
 
-import Header from "./layout/Header/Header";
-import Footer from "./layout/Footer/Footer";
+import Layout from "./layout/layout";
 import PizzaListPage from "./pages/PizzaListPage/PizzaListPage.lazy";
-import PizzaPage from "./pages/PizzaPage/PizzaPage.lazy";
+import AboutUsPage from "./pages/AboutUsPage/AboutUsPage.lazy";
+import NotFoundPage from "./pages/NotFoundPage/NotFoundPage.lazy";
+
+const withLayout = (Component) => (props) => (
+    <Layout>
+        <Component {...props} />
+    </Layout>
+);
 
 function App() {
   return (
       <div className="App">
-          <Header />
-          <main>
-              <Router>
-                  <Switch>
-                      <Route path="/">
-                          <PizzaListPage />
-                      </Route>
-                      <Route path="/pizza">
-                          <PizzaListPage />
-                      </Route>
-                      <Route path="/pizza/:id">
-                          <PizzaPage />
-                      </Route>
-                  </Switch>
-              </Router>
-          </main>
-          <Footer />
+          <BrowserRouter>
+              <Switch>
+                  <Route exact path="/" component={withLayout(PizzaListPage)} />
+                  <Route path="/pizza" component={withLayout(PizzaListPage)} />
+                  <Route exact path="/about-us" component={withLayout(AboutUsPage)}/>
+                  <Route component={withLayout(NotFoundPage)}/>
+              </Switch>
+          </BrowserRouter>
       </div>
   );
 }

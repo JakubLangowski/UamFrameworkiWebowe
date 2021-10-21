@@ -2,28 +2,21 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './Header.css';
 import { ReactComponent as Logo } from '@assets/logo.svg';
+import {Link} from "react-router-dom";
 
 const Header = () => (
-  <header className="Header">
-      <nav className="flex items-center  justify-between flex-wrap  p-6">
-          <div className="flex items-center flex-no-shrink text-white mr-6">
-              <Logo />
-              <span className="font-semibold text-xl tracking-tight">Uam Pizza App</span>
-          </div>
-          <div className="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
-              <div className="text-sm lg:flex-grow">
-                  <a href="#responsive-header"
-                     className="block mt-4 lg:inline-block lg:mt-0 text-teal-lighter hover:text-white mr-4">
-                      Docs
-                  </a>
-                  <a href="#responsive-header"
-                     className="block mt-4 lg:inline-block lg:mt-0 text-teal-lighter hover:text-white mr-4">
-                      Examples
-                  </a>
-                  <a href="#responsive-header"
-                     className="block mt-4 lg:inline-block lg:mt-0 text-teal-lighter hover:text-white">
-                      Blog
-                  </a>
+  <header className="Header bg-white shadow-2xl">
+      <nav className="grid grid-cols-12 items-center p-2">
+          <Link to="/" className="col-span-6 md:col-span-3 flex justify-center items-center">
+              <Logo className="w-16"/>
+              <span className="font-semibold text-xl font-semibold pl-3 text-red-600 tracking-tight">Uam Pizza App</span>
+          </Link>
+          <div className="col-span-6 md:col-span-9 flex justify-center space-x-6">
+              <div className="text-center">
+                  <Link to="/pizza" className="text-lg font-semibold">Menu</Link>
+              </div>
+              <div className="text-center">
+                  <Link to="/about-us" className="text-lg font-semibold">AboutUs</Link>
               </div>
           </div>
       </nav>

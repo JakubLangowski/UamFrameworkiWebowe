@@ -6,6 +6,7 @@ module.exports = {
     webpack: {
         alias: {
             '@assets': path.join(path.resolve(__dirname, './src', 'assets')),
+            '@api': path.join(path.resolve(__dirname, './src', 'api')),
         }
     },
     style: {
