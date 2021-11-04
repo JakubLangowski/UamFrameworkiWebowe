@@ -2,7 +2,9 @@ import React, { lazy, Suspense } from 'react';
 
 const LazyNotFoundPage = lazy(() => import('./NotFoundPage'));
 
-const NotFoundPage = props => (
+interface Props {}
+
+const NotFoundPage = (props : Props) => (
   <Suspense fallback={null}>
     <LazyNotFoundPage {...props} />
   </Suspense>

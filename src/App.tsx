@@ -12,7 +12,7 @@ import PizzaListPage from "./pages/PizzaListPage/PizzaListPage.lazy";
 import AboutUsPage from "./pages/AboutUsPage/AboutUsPage.lazy";
 import NotFoundPage from "./pages/NotFoundPage/NotFoundPage.lazy";
 
-const withLayout = (Component) => (props) => (
+const withLayout = (Component: any) => (props: any) => (
     <Layout>
         <Component {...props} />
     </Layout>

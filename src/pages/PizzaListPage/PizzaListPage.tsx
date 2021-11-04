@@ -1,34 +1,37 @@
-import React from 'react';
-import { useState, useEffect } from "react";
 import './PizzaListPage.css';
+import React from 'react';
+import { useEffect } from "react";
 import {Route, Switch, useRouteMatch} from "react-router-dom";
 import PizzaCard from "../../components/PizzaCard/PizzaCard";
-import Api from '@api/api'
+import PizzaService, {Pizza} from "../../api/services/PizzaService";
 import PizzaListItem from "../../components/PizzaListItem/PizzaListItem";
+import {useDispatch, useSelector} from "react-redux";
+import {bindActionCreators} from "redux";
+import {actionCreators, State} from "../../store/index"
 
 const PizzaListPage = () => {
 
-    let {path, url} = useRouteMatch();
-    const [pizzaList, setPizzaList] = useState([]);
+    let {path} = useRouteMatch();
 
+    const { fetchPizzas } = bindActionCreators(actionCreators, useDispatch())
+    const pizzas = useSelector((state: State) => state.pizzas)
 
     useEffect(() => {
+        if (pizzas.isLoaded) return
+        fetchPizzas()
+    }, [pizzas]);
 
-        Api.get('pizza')
-            .then((response) => {
-                setPizzaList(response.data);
-            })
-            .catch(error => console.log(error))
 
-    }, []);
+    if (!pizzas.isLoaded) {
+        return <p>Loading...</p>
+    }
 
-    const pizzaListUi = pizzaList.map((pizza) => {
+    const pizzaListUi = pizzas.data.map((pizza: Pizza) => {
         return <PizzaListItem key={pizza.id} pizza={pizza} />
     })
 
     return (
         <div className="PizzaListPage grid grid-cols-1 md:grid-cols-12 gap-4">
-
             <div className="col-span-1 md:col-span-4">
                 <ul className="divide-y-2 divide-gray-100">
                     <li className="PizzaListItem text-center font-semibold text-xl">
