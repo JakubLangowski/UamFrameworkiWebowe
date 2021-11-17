@@ -1,7 +1,5 @@
-import {Pizza} from "../../api/services/PizzaService";
-import {PizzasReducerAction} from "../actions";
-import {PizzasActionType} from "../action-types";
-
+import {Pizza} from "../../../api/services/PizzaService";
+import {PizzasActionType, PizzasReducerAction} from "./pizzasActions";
 
 export interface PizzaReducerState {
     isLoaded: boolean
@@ -15,14 +13,14 @@ const reducer = (state: PizzaReducerState = {
     switch (action.type) {
         case PizzasActionType.FETCH_START:
             state.isLoaded = false
-            return state
+            return Object.assign({}, state)
         case PizzasActionType.FETCH_SUCCESS:
             state.data = action.payload
             state.isLoaded = true
-            return state
+            return Object.assign({}, state)
         case PizzasActionType.FETCH_ERROR:
             state.isLoaded = false
-            return state
+            return Object.assign({}, state)
         default:
             return state
     }

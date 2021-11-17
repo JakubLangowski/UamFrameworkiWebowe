@@ -16,12 +16,7 @@ header {
     min-height: 100%; /* real browsers */
 }
 
-main {
-    padding-bottom: 200px;
-}
-
 footer {
-    position: absolute;
     width: 100%;
-    bottom: 0; /* stick to bottom */
+    bottom: 0;
 }

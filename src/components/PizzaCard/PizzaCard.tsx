@@ -1,7 +1,6 @@
 import React, {useEffect} from 'react';
 import './PizzaCard.css';
 import {useParams} from "react-router-dom";
-import IngredientsService from "../../api/services/IngredientsService";
 import {bindActionCreators} from "redux";
 import {actionCreators, State} from "../../store";
 import {useDispatch, useSelector} from "react-redux";
@@ -10,7 +9,8 @@ const PizzaCard = () => {
 
     let { pizzaId } = useParams<{pizzaId: string}>();
 
-    const { fetchIngredients } = bindActionCreators(actionCreators, useDispatch())
+    const { fetchIngredients } = bindActionCreators(actionCreators.ingredientsActions, useDispatch())
+    const { addToCart } = bindActionCreators(actionCreators.cartActions, useDispatch())
     const pizzas = useSelector((state: State) => state.pizzas)
     const ingredients = useSelector((state: State) => state.ingredients)
 
@@ -18,7 +18,7 @@ const PizzaCard = () => {
     useEffect(() => {
         if (ingredients.isLoaded) return
         fetchIngredients()
-    }, [ingredients.isLoaded]);
+    }, [ingredients.isLoaded, fetchIngredients]);
 
     const currentPizza = pizzas.data.find(x => x.id === pizzaId)
 
@@ -38,6 +38,9 @@ const PizzaCard = () => {
                         { currentPizza.name }
                     </p>
                 </div>
+                <button onClick={() => addToCart(currentPizza, ingredients.data)}>
+                    Add To Cart
+                </button>
             </div>
             <div className="flex flex-col mb-4 rounded-lg shadow-2xl bg-white">
                 <h3>Ingredients</h3>
