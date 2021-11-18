@@ -17,7 +17,7 @@ export const addToCart = (pizza: Pizza, ingredients: { [key: string] : Ingredien
     }
 }
 
-export const removeFromCart = (cartItemId: number) => {
+export const removeFromCart = (cartItemId: string) => {
     return (dispatch: Dispatch<CartReducerAction>) => {
         dispatch({
             type: CartActionType.DELETE,
@@ -26,12 +26,12 @@ export const removeFromCart = (cartItemId: number) => {
     }
 }
 
-export const toggleIngredientInPizza = (pizzaId: number, ingredient: Ingredient) => {
+export const toggleIngredientInPizza = (cartPizzaId: string, ingredient: Ingredient) => {
     return (dispatch: Dispatch<CartReducerAction>) => {
         dispatch({
             type: CartActionType.TOGGLE_INGREDIENT,
             payload: {
-               pizzaId: pizzaId,
+               cartPizzaId: cartPizzaId,
                ingredient: ingredient
             }
         })

@@ -10,7 +10,7 @@ import { MdEdit, MdDelete } from "react-icons/md";
 
 
 interface Props {
-    cartPizzaId: number,
+    cartPizzaId: string,
     pizza: CartPizza,
     ingredients: Record<string, CartIngredient>
 }

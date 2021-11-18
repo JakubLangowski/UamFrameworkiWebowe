@@ -38,9 +38,9 @@ const CheckoutPage = () => {
     const pizzaListUi = Object.keys(cart.pizzas).map((key, index) => {
         return <CartPizzaItem
                     key={key}
-                    cartPizzaId={parseInt(key)}
-                    pizza={cart.pizzas[parseInt(key)].pizza}
-                    ingredients={cart.pizzas[parseInt(key)].ingredients}
+                    cartPizzaId={key}
+                    pizza={cart.pizzas[key].pizza}
+                    ingredients={cart.pizzas[key].ingredients}
         />
     })
 

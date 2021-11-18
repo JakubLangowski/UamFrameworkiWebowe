@@ -23,7 +23,7 @@ export interface AddToCartReducerAction {
 
 export interface DeleteFromCartReducerAction {
     type: CartActionType.DELETE,
-    payload: number
+    payload: string
 }
 
 export interface AddSauceToCartReducerAction {
@@ -39,7 +39,7 @@ export interface DeleteSauceFromCartReducerAction {
 export interface ToggleIngredientInCartPizzaReducerAction {
     type: CartActionType.TOGGLE_INGREDIENT,
     payload: {
-        pizzaId: number
+        cartPizzaId: string
         ingredient: Ingredient,
     }
 }

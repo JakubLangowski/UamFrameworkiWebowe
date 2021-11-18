@@ -62,10 +62,10 @@ function addPizza(state: CartReducerState, action: AddToCartReducerAction) : Car
         cartIngredients[ingredientId].active = true
     }
 
-    let newKey = 1;
+    let newKey = "1";
 
     if (keys.length !== 0) {
-        newKey = parseInt(keys[keys.length - 1]) + 1
+        newKey = (parseInt(keys[keys.length - 1]) + 1).toString()
     }
 
     stateCopy.pizzas[newKey] = {
@@ -94,8 +94,8 @@ function deletePizza(state: CartReducerState, action: DeleteFromCartReducerActio
 
 function toggleIngredient(state: CartReducerState, action: ToggleIngredientInCartPizzaReducerAction): CartReducerState {
     const stateCopy = Object.assign({}, state);
-    if (typeof stateCopy.pizzas[action.payload.pizzaId] !== "undefined") {
-        const currentItem = stateCopy.pizzas[action.payload.pizzaId];
+    if (typeof stateCopy.pizzas[action.payload.cartPizzaId] !== "undefined") {
+        const currentItem = stateCopy.pizzas[action.payload.cartPizzaId];
         const editedIngredient = currentItem.ingredients[action.payload.ingredient.id];
         if (typeof editedIngredient !== "undefined") {
             if (editedIngredient.active) {

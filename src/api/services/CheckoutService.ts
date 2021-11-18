@@ -31,7 +31,7 @@ class CheckoutService {
         }
 
         for (const id in cart.pizzas) {
-            const currentPizza = cart.pizzas[parseInt(id)];
+            const currentPizza = cart.pizzas[id];
             const ingredientsIds: string[] = []
 
             for (const ingredientId in currentPizza.ingredients) {
