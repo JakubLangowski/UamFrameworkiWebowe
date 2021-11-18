@@ -27,19 +27,19 @@ const App:FC<any> = () => {
     const { fetchPizzas } = bindActionCreators(actionCreators.pizzasActions, useDispatch())
     const { fetchIngredients } = bindActionCreators(actionCreators.ingredientsActions, useDispatch())
     const { fetchSauces } = bindActionCreators(actionCreators.saucesActions, useDispatch())
-    const pizzasLoaded = useSelector((state: State) => state.pizzas.isLoaded)
-    const ingredientsLoaded = useSelector((state: State) => state.ingredients.isLoaded)
-    const saucesLoaded = useSelector((state: State) => state.sauces.isLoaded)
+    const pizzas = useSelector((state: State) => state.pizzas)
+    const ingredients = useSelector((state: State) => state.ingredients)
+    const sauces = useSelector((state: State) => state.sauces)
 
 
     useEffect(() => {
-        if (!pizzasLoaded) fetchPizzas()
-        if (!ingredientsLoaded) fetchIngredients()
-        if (!saucesLoaded) fetchSauces()
-    }, [pizzasLoaded, ingredientsLoaded, saucesLoaded])
+        if (!pizzas.isLoaded && !pizzas.isLoading) fetchPizzas()
+        if (!ingredients.isLoaded && !ingredients.isLoading) fetchIngredients()
+        if (!sauces.isLoaded && !sauces.isLoading) fetchSauces()
+    }, [pizzas, ingredients, sauces, fetchPizzas, fetchIngredients, fetchSauces])
 
 
-    if (!pizzasLoaded || !ingredientsLoaded || !saucesLoaded) {
+    if (!pizzas.isLoaded || !ingredients.isLoaded || !sauces.isLoaded) {
        return <AppLoader />
     }
 

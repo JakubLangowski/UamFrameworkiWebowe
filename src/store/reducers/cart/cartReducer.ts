@@ -26,7 +26,7 @@ export interface CartIngredient {
 export interface CartReducerState {
     cartLocked: boolean
     total: number,
-    pizzas: Record<number, {
+    pizzas: Record<string, {
         pizza: CartPizza,
         ingredients: Record<string, CartIngredient>
     }>
@@ -34,7 +34,7 @@ export interface CartReducerState {
 }
 
 function addPizza(state: CartReducerState, action: AddToCartReducerAction) : CartReducerState {
-
+    const stateCopy = Object.assign({}, state);
     const keys = Object.keys(state.pizzas);
 
     console.log(action.payload)
@@ -68,92 +68,96 @@ function addPizza(state: CartReducerState, action: AddToCartReducerAction) : Car
         newKey = parseInt(keys[keys.length - 1]) + 1
     }
 
-    state.pizzas[newKey] = {
+    stateCopy.pizzas[newKey] = {
         pizza: cartPizza,
         ingredients: cartIngredients
     }
 
-    state.total += action.payload.pizza.price
-    return state;
+    stateCopy.total += action.payload.pizza.price
+    return stateCopy;
 }
 
 function deletePizza(state: CartReducerState, action: DeleteFromCartReducerAction) : CartReducerState {
-    if (typeof state.pizzas[action.payload] !== "undefined") {
-        const currentItem = state.pizzas[action.payload];
-        state.total -= currentItem.pizza.price
+    const stateCopy = Object.assign({}, state);
+    if (typeof stateCopy.pizzas[action.payload] !== "undefined") {
+        const currentItem = stateCopy.pizzas[action.payload];
+        stateCopy.total -= currentItem.pizza.price
         for (const ingredientId in currentItem.ingredients) {
             if (currentItem.ingredients[ingredientId].active && !currentItem.ingredients[ingredientId].default) {
-                state.total -= currentItem.ingredients[ingredientId].price
+                stateCopy.total -= currentItem.ingredients[ingredientId].price
             }
         }
-        delete state.pizzas[action.payload]
+        delete stateCopy.pizzas[action.payload]
     }
-    return state;
+    return stateCopy;
 }
 
 function toggleIngredient(state: CartReducerState, action: ToggleIngredientInCartPizzaReducerAction): CartReducerState {
-    if (typeof state.pizzas[action.payload.pizzaId] !== "undefined") {
-        const currentItem = state.pizzas[action.payload.pizzaId];
+    const stateCopy = Object.assign({}, state);
+    if (typeof stateCopy.pizzas[action.payload.pizzaId] !== "undefined") {
+        const currentItem = stateCopy.pizzas[action.payload.pizzaId];
         const editedIngredient = currentItem.ingredients[action.payload.ingredient.id];
         if (typeof editedIngredient !== "undefined") {
             if (editedIngredient.active) {
                 if (!editedIngredient.default) {
-                    state.total -= editedIngredient.price
+                    stateCopy.total -= editedIngredient.price
                     currentItem.pizza.totalPrice -= editedIngredient.price
                 }
                 editedIngredient.active = false
             } else {
                 if (!editedIngredient.default) {
-                    state.total += editedIngredient.price
+                    stateCopy.total += editedIngredient.price
                     currentItem.pizza.totalPrice += editedIngredient.price
                 }
                 editedIngredient.active = true
             }
         }
     }
-    return state;
+    return stateCopy;
 }
 
 function addSauce(state: CartReducerState, action: AddSauceToCartReducerAction): CartReducerState {
-    if (typeof state.sauces[action.payload.id] !== "undefined") {
-        state.sauces[action.payload.id] += 1;
+    const stateCopy = Object.assign({}, state);
+    if (typeof stateCopy.sauces[action.payload.id] !== "undefined") {
+        stateCopy.sauces[action.payload.id] += 1;
     } else {
-        state.sauces[action.payload.id] = 1
+        stateCopy.sauces[action.payload.id] = 1
     }
-    state.total += action.payload.price
+    stateCopy.total += action.payload.price
 
-    return state;
+    return stateCopy;
 }
 
 function deleteSauce(state: CartReducerState, action: DeleteSauceFromCartReducerAction): CartReducerState {
-    if (typeof state.sauces[action.payload.id] !== "undefined") {
-        if (state.sauces[action.payload.id] > 0) {
-            state.sauces[action.payload.id] -= 1;
-            state.total -= action.payload.price
+    const stateCopy = Object.assign({}, state);
+    if (typeof stateCopy.sauces[action.payload.id] !== "undefined") {
+        if (stateCopy.sauces[action.payload.id] > 0) {
+            stateCopy.sauces[action.payload.id] -= 1;
+            stateCopy.total -= action.payload.price
         }
     }
-    return state;
+    return stateCopy;
 }
 
 const reducer = (state: CartReducerState = {
     cartLocked: false,
     total: 0,
-    pizzas: [],
+    pizzas: {},
     sauces: {}
 }, action: CartReducerAction): CartReducerState => {
 
 
     switch (action.type) {
         case CartActionType.ADD:
-            return Object.assign({}, addPizza(state, action))
+            return Object.assign({}, state, addPizza(state, action))
         case CartActionType.DELETE:
-            return Object.assign({}, deletePizza(state, action))
+            return Object.assign({}, state, deletePizza(state, action))
         case CartActionType.ADD_SAUCE:
-            return Object.assign({}, addSauce(state, action))
+            return Object.assign({}, state, addSauce(state, action))
         case CartActionType.DELETE_SAUCE:
-            return Object.assign({}, deleteSauce(state, action))
+            return Object.assign({}, state, deleteSauce(state, action))
         case CartActionType.TOGGLE_INGREDIENT:
-            return Object.assign({}, toggleIngredient(state, action))
+            return Object.assign({}, state, toggleIngredient(state, action))
         case CartActionType.LOCK_CART:
             state.cartLocked = true;
             return Object.assign({}, state)
@@ -161,7 +165,7 @@ const reducer = (state: CartReducerState = {
             state.cartLocked = false;
             return Object.assign({}, state)
         case CartActionType.CLEAR_CART:
-            return Object.assign({}, {
+            return Object.assign({}, state, {
                 cartLocked: false,
                 total: 0,
                 pizzas: [],

@@ -6,6 +6,7 @@ import {actionCreators} from "../../../store";
 import {useDispatch} from "react-redux";
 import { MdRadioButtonUnchecked, MdOutlineRadioButtonChecked } from "react-icons/md";
 import Button from "../../Shared/Button/Button";
+import { MdEdit, MdDelete } from "react-icons/md";
 
 
 interface Props {
@@ -16,7 +17,7 @@ interface Props {
 
 const CartPizzaItem = ({cartPizzaId, pizza, ingredients}: Props) => {
 
-    const { toggleIngredientInPizza } = bindActionCreators(actionCreators.cartActions, useDispatch())
+    const { toggleIngredientInPizza, removeFromCart } = bindActionCreators(actionCreators.cartActions, useDispatch())
     const [showIngredients, setShowIngredients] = useState(false)
 
     useEffect(() => {
@@ -45,8 +46,13 @@ const CartPizzaItem = ({cartPizzaId, pizza, ingredients}: Props) => {
                     <span className="font-semibold text-lg">{ pizza.name }</span>
                     <span>Cena: { pizza.totalPrice }</span>
                 </div>
-                <div>
-                    <Button onClick={() => setShowIngredients(!showIngredients)}>Edytuj sładniki</Button>
+                <div className="gap-x-4">
+                    <Button onClick={() => setShowIngredients(!showIngredients)}>
+                        <MdEdit />
+                    </Button>
+                    <Button onClick={() => removeFromCart(cartPizzaId)}>
+                        <MdDelete />
+                    </Button>
                 </div>
             </div>
             {showIngredients && <div className="divide-y-2">

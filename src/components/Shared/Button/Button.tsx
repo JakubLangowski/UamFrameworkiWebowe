@@ -5,6 +5,7 @@ interface Props {
     onClick: () => void;
     disabled?: boolean
     loading?: boolean
+    icon?: boolean
     body?: React.ReactNode | string,
 }
 
@@ -12,7 +13,10 @@ const Button:FC<Props> = (props) => {
 
     return (
         <button
-            className="Button inline-flex justify-center hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-opacity-50 disabled:opacity-50"
+            className={
+                "Button inline-flex justify-center hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-opacity-50 disabled:opacity-50" +
+                (props.icon) ? "text-red-400" : "bg-red-400"
+            }
             onClick={props.onClick}
             disabled={props.disabled ?? false}
         >
