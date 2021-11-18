@@ -3,7 +3,6 @@ import {CartActionType, CartReducerAction} from "./cartActions";
 import {Pizza} from "../../../api/services/PizzaService";
 import {Sauce} from "../../../api/services/SauceService";
 import {Ingredient} from "../../../api/services/IngredientsService";
-import CheckoutService, {CheckoutData} from "../../../api/services/CheckoutService";
 
 
 export const addToCart = (pizza: Pizza, ingredients: { [key: string] : Ingredient }) => {
@@ -57,13 +56,27 @@ export const removeSauceFromCart = (sauce: Sauce) => {
     }
 }
 
-export const checkout = (data: CheckoutData) => {
-    return async (dispatch: Dispatch<CartReducerAction>) => {
-        dispatch({type: CartActionType.CHECKOUT_START})
-        CheckoutService.checkout(data)
-            .then(response => {
-                dispatch({type: CartActionType.CHECKOUT_SUCCESS})
-            })
-            .catch(error => dispatch({type: CartActionType.CHECKOUT_ERROR}))
+
+export const clearCart = () => {
+    return (dispatch: Dispatch<CartReducerAction>) => {
+        dispatch({
+            type: CartActionType.CLEAR_CART
+        })
+    }
+}
+
+export const lockCart = () => {
+    return (dispatch: Dispatch<CartReducerAction>) => {
+        dispatch({
+            type: CartActionType.LOCK_CART
+        })
+    }
+}
+
+export const unlockCart = () => {
+    return (dispatch: Dispatch<CartReducerAction>) => {
+        dispatch({
+            type: CartActionType.UNLOCK_CART
+        })
     }
 }

@@ -1,8 +1,11 @@
 import {
+    AddSauceToCartReducerAction,
+    AddToCartReducerAction,
     CartActionType,
-    ToggleIngredientInCartPizzaReducerAction, AddSauceToCartReducerAction, AddToCartReducerAction,
-    CartReducerAction, DeleteFromCartReducerAction,
-    DeleteSauceFromCartReducerAction
+    CartReducerAction,
+    DeleteFromCartReducerAction,
+    DeleteSauceFromCartReducerAction,
+    ToggleIngredientInCartPizzaReducerAction
 } from "./cartActions";
 
 export interface CartPizza {
@@ -20,8 +23,8 @@ export interface CartIngredient {
     active: boolean
 }
 
-interface CartReducerState {
-    checkoutInProgress: boolean
+export interface CartReducerState {
+    cartLocked: boolean
     total: number,
     pizzas: Record<number, {
         pizza: CartPizza,
@@ -133,14 +136,12 @@ function deleteSauce(state: CartReducerState, action: DeleteSauceFromCartReducer
 }
 
 const reducer = (state: CartReducerState = {
-    checkoutInProgress: false,
+    cartLocked: false,
     total: 0,
     pizzas: [],
     sauces: {}
 }, action: CartReducerAction): CartReducerState => {
 
-    if (state.checkoutInProgress)
-        return state;
 
     switch (action.type) {
         case CartActionType.ADD:
@@ -153,15 +154,19 @@ const reducer = (state: CartReducerState = {
             return Object.assign({}, deleteSauce(state, action))
         case CartActionType.TOGGLE_INGREDIENT:
             return Object.assign({}, toggleIngredient(state, action))
-        case CartActionType.CHECKOUT_START:
-            state.checkoutInProgress = true;
+        case CartActionType.LOCK_CART:
+            state.cartLocked = true;
             return Object.assign({}, state)
-        case CartActionType.CHECKOUT_SUCCESS:
-            state.checkoutInProgress = false;
+        case CartActionType.UNLOCK_CART:
+            state.cartLocked = false;
             return Object.assign({}, state)
-        case CartActionType.CHECKOUT_ERROR:
-            state.checkoutInProgress = false;
-            return Object.assign({}, state)
+        case CartActionType.CLEAR_CART:
+            return Object.assign({}, {
+                cartLocked: false,
+                total: 0,
+                pizzas: [],
+                sauces: {}
+            })
         default:
             return state
     }

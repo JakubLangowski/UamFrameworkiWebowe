@@ -4,30 +4,26 @@ import { useEffect } from "react";
 import {Route, Switch, useRouteMatch} from "react-router-dom";
 import PizzaCard from "../../components/PizzaCard/PizzaCard";
 import {Pizza} from "../../api/services/PizzaService";
-import PizzaListItem from "../../components/PizzaListItem/PizzaListItem";
-import {useDispatch, useSelector} from "react-redux";
-import {bindActionCreators} from "redux";
-import {actionCreators, State} from "../../store/index"
+import {useSelector} from "react-redux";
+import {State} from "../../store"
+import ListItem from "../../components/Shared/ListItem/ListItem";
 
 const PizzaListPage = () => {
 
     let {path} = useRouteMatch();
 
-    const { fetchPizzas } = bindActionCreators(actionCreators.pizzasActions, useDispatch())
     const pizzas = useSelector((state: State) => state.pizzas)
 
     useEffect(() => {
-        if (pizzas.isLoaded) return
-        fetchPizzas()
-    }, [pizzas, fetchPizzas]);
 
-
-    if (!pizzas.isLoaded) {
-        return <p>Loading...</p>
-    }
+    }, [pizzas]);
 
     const pizzaListUi = pizzas.data.map((pizza: Pizza) => {
-        return <PizzaListItem key={pizza.id} pizza={pizza} />
+        return (
+            <ListItem key={pizza.id} linkTo={`/pizza/${pizza.id}`}>
+                { pizza.name }
+            </ListItem>
+        )
     })
 
     return (

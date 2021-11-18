@@ -1,10 +1,10 @@
 import React from 'react';
 import './CartSauceItem.css';
-import {Sauce} from "../../api/services/SauceService";
+import {Sauce} from "../../../api/services/SauceService";
 import { MdAdd, MdRemove } from "react-icons/md";
-import Button from "../Button/Button";
+import Button from "../../Shared/Button/Button";
 import {bindActionCreators} from "redux";
-import {actionCreators} from "../../store";
+import {actionCreators} from "../../../store";
 import {useDispatch} from "react-redux";
 
 const CartSauceItem = ({sauce, count} : {sauce: Sauce, count: number}) => {
@@ -20,9 +20,13 @@ const CartSauceItem = ({sauce, count} : {sauce: Sauce, count: number}) => {
             </div>
             <div className="flex-col flex-col items-center">
                 <span>Ilość: { count }</span>
-                <div className="flex justify-around">
-                    <Button onClick={() => addSauceToCart(sauce)} body={<MdAdd />} />
-                    <Button onClick={() => removeSauceFromCart(sauce)} body={<MdRemove />} />
+                <div className="flex justify-around gap-x-1">
+                    <Button onClick={() => addSauceToCart(sauce)}>
+                        <MdAdd />
+                    </Button>
+                    <Button onClick={() => removeSauceFromCart(sauce)}>
+                        <MdRemove />
+                    </Button>
                 </div>
             </div>
         </li>

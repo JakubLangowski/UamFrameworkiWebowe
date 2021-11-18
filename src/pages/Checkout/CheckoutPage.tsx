@@ -1,64 +1,38 @@
 import './CheckoutPage.css';
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {bindActionCreators} from "redux";
 import {actionCreators, State} from "../../store";
 import {useDispatch, useSelector} from "react-redux";
-import CartSauceItem from "../../components/CartSauceItem/CartSauceItem";
-import CartPizzaItem from "../../components/CartPizzaItem/CartPizzaItem";
-import Button from "../../components/Button/Button";
-import {PartialOrderPizzaDto, PartialOrderSauceDto} from "../../api/services/CheckoutService";
+import CartSauceItem from "../../components/Cart/CartSauceItem/CartSauceItem";
+import CartPizzaItem from "../../components/Cart/CartPizzaItem/CartPizzaItem";
+import Button from "../../components/Shared/Button/Button";
+import CheckoutService from "../../api/services/CheckoutService";
+import {useHistory} from "react-router";
 
 const CheckoutPage = () => {
 
-    const { fetchSauces } = bindActionCreators(actionCreators.saucesActions, useDispatch())
-    const { checkout } = bindActionCreators(actionCreators.cartActions, useDispatch())
+    const history = useHistory();
+    const [checkoutDisabled, setCheckoutDisabled] = useState(false)
+    const { clearCart, lockCart, unlockCart } = bindActionCreators(actionCreators.cartActions, useDispatch())
     const sauces = useSelector((state: State) => state.sauces)
     const cart = useSelector((state: State) => state.cart)
 
-    useEffect(() => {
-        if (!sauces.isLoaded) {
-            fetchSauces()
-        }
-    }, [sauces, cart, fetchSauces]);
+    useEffect(() => {}, [cart, checkoutDisabled]);
 
     const startCheckout = () => {
-        const pizza: PartialOrderPizzaDto[] = []
-        const sauce: PartialOrderSauceDto[] = []
+        setCheckoutDisabled(true)
+        lockCart()
 
-        for (const sauceId in cart.sauces) {
-            sauce.push({
-                id: sauceId,
-                count: cart.sauces[sauceId]
+        CheckoutService.checkout(cart)
+            .then(() => {
+                clearCart()
+                history.push('/')
             })
-        }
-
-        for (const id in cart.pizzas) {
-            const currentPizza = cart.pizzas[parseInt(id)];
-            const ingredientsIds: string[] = []
-
-            for (const ingredientId in currentPizza.ingredients) {
-                if (currentPizza.ingredients[ingredientId].active) {
-                    ingredientsIds.push(currentPizza.ingredients[ingredientId].id)
-                }
-            }
-
-            pizza.push({
-                id: currentPizza.pizza.id,
-                ingredients: ingredientsIds
+            .catch(() => {
+                console.log("Checkout Failed")
+                history.push('/')
             })
-        }
-
-        console.log({
-            pizza: pizza,
-            sauce: sauce,
-            total: cart.total
-        })
-
-        checkout({
-            pizza: pizza,
-            sauce: sauce,
-            total: cart.total
-        })
+            .finally(() => unlockCart())
     }
 
     const pizzaListUi = Object.keys(cart.pizzas).map((key, index) => {
@@ -96,7 +70,13 @@ const CheckoutPage = () => {
                 </div>
                 <div className="col-span-1 md:col-span-6">
                     <h2 className="text-center font-semibold text-xl">Dane zamówienia</h2>
-                    <Button onClick={() => startCheckout()} body={"Zamów"}/>
+                    <Button
+                        onClick={() => startCheckout()}
+                        disabled={checkoutDisabled}
+                        loading={checkoutDisabled}
+                    >
+                        Zamów
+                    </Button>
                 </div>
             </div>
         </div>

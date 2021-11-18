@@ -9,7 +9,7 @@ export interface Ingredient {
 class IngredientsService {
 
     getAll() {
-        return api.get<Ingredient[]>("/ingredients");
+        return api.get<Ingredient[]>("/ingredient");
     }
 
 }

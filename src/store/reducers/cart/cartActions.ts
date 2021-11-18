@@ -8,9 +8,9 @@ export enum CartActionType {
     ADD_SAUCE = "cart_add_sauce",
     DELETE_SAUCE = "cart_delete_sauce",
     TOGGLE_INGREDIENT = "cart_toggle_ingredient",
-    CHECKOUT_START = "cart_checkout_start",
-    CHECKOUT_SUCCESS = "cart_checkout_success",
-    CHECKOUT_ERROR = "cart_checkout_error",
+    CLEAR_CART = "cart_clear",
+    LOCK_CART = "cart_lock",
+    UNLOCK_CART = "cart_unlock"
 }
 
 export interface AddToCartReducerAction {
@@ -44,21 +44,20 @@ export interface ToggleIngredientInCartPizzaReducerAction {
     }
 }
 
-export interface CheckoutStartReducerAction {
-    type: CartActionType.CHECKOUT_START
+export interface CartClearReducerAction {
+    type: CartActionType.CLEAR_CART
 }
 
-export interface CheckoutSuccessReducerAction {
-    type: CartActionType.CHECKOUT_SUCCESS
+export interface LockCartReducerAction {
+    type: CartActionType.LOCK_CART
 }
 
-export interface CheckoutErrorReducerAction {
-    type: CartActionType.CHECKOUT_ERROR
+export interface UnlockCartReducerAction {
+    type: CartActionType.UNLOCK_CART
 }
-
 
 export type CartReducerAction =
-    AddToCartReducerAction | DeleteFromCartReducerAction |
-    AddSauceToCartReducerAction | DeleteSauceFromCartReducerAction |
-    ToggleIngredientInCartPizzaReducerAction | CheckoutStartReducerAction |
-    CheckoutSuccessReducerAction | CheckoutErrorReducerAction
+AddToCartReducerAction | DeleteFromCartReducerAction |
+AddSauceToCartReducerAction | DeleteSauceFromCartReducerAction |
+ToggleIngredientInCartPizzaReducerAction | CartClearReducerAction |
+LockCartReducerAction | UnlockCartReducerAction

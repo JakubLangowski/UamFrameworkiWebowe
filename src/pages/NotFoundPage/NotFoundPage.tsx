@@ -1,12 +1,19 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import './NotFoundPage.css';
+import { ReactComponent as Logo } from '@assets/logo.svg';
 
-const NotFoundPage = () => (
-  <div className="NotFoundPage">
-    NotFoundPage Component
-  </div>
-);
+const NotFoundPage = () => {
+
+    return (
+        <div className="NotFoundPage">
+            <div className="flex flex-col justify-center items-center">
+                <Logo className="w-16"/>
+                <br/>
+                <h1 className="text-center text-red-500 font-semibold text-3xl">404 Not Found</h1>
+            </div>
+        </div>
+    )
+};
 
 NotFoundPage.propTypes = {};
 

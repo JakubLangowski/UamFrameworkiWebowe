@@ -1,10 +1,10 @@
-import React, {useEffect, useState} from 'react';
-import PropTypes from 'prop-types';
+import React, {useEffect} from 'react';
 import './Header.css';
-import { ReactComponent as Logo } from '@assets/logo.svg';
 import {Link} from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import {State} from "../../store";
+import AppLogo from "../../components/AppLogo/AppLogo";
+import { ReactComponent as ShoppingCartLogo } from '@assets/shopping_cart.svg';
 
 const Header = () => {
 
@@ -18,20 +18,23 @@ const Header = () => {
         <header className="Header bg-white shadow-2xl">
             <nav className="grid grid-cols-12 items-center p-2">
                 <Link to="/" className="col-span-6 md:col-span-3 flex justify-center items-center">
-                    <Logo className="w-16"/>
-                    <span className="font-semibold text-xl font-semibold pl-3 text-red-600 tracking-tight">Uam Pizza App</span>
+                    <AppLogo />
                 </Link>
                 <div className="col-span-3 md:col-span-6 flex justify-center space-x-6">
                     <div className="text-center">
                         <Link to="/pizza" className="text-lg font-semibold">Menu</Link>
                     </div>
-                    <div className="text-center">
-                        <Link to="/about-us" className="text-lg font-semibold">AboutUs</Link>
-                    </div>
                 </div>
                 <div className="col-span-3 md:col-span-3 flex justify-center space-x-6">
-                    <Link to="/checkout" className="text-lg font-semibold">Koszyk</Link>
-                    { Object.keys(cart.pizzas).length }
+                    <Link to="/checkout" className="relative inline-block">
+                        <ShoppingCartLogo className="w-8 h-8 text-gray-700 fill-current" />
+                        <span
+                            className="absolute top-0 right-0 inline-flex items-center justify-center
+                            px-2 py-1 text-xs font-bold leading-none
+                            text-red-100 transform translate-x-1/2 -translate-y-1/2 bg-red-600 rounded-full">
+                            { Object.keys(cart.pizzas).length }
+                        </span>
+                    </Link>
                 </div>
             </nav>
         </header>

@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import './CartPizzaItem.css';
-import {CartIngredient, CartPizza} from "../../store/reducers/cart/cartReducer";
+import {CartIngredient, CartPizza} from "../../../store/reducers/cart/cartReducer";
 import {bindActionCreators} from "redux";
-import {actionCreators} from "../../store";
+import {actionCreators} from "../../../store";
 import {useDispatch} from "react-redux";
 import { MdRadioButtonUnchecked, MdOutlineRadioButtonChecked } from "react-icons/md";
-import Button from "../Button/Button";
+import Button from "../../Shared/Button/Button";
 
 
 interface Props {
@@ -46,7 +46,7 @@ const CartPizzaItem = ({cartPizzaId, pizza, ingredients}: Props) => {
                     <span>Cena: { pizza.totalPrice }</span>
                 </div>
                 <div>
-                    <Button onClick={() => setShowIngredients(!showIngredients)} body={"Edytuj sładniki"}/>
+                    <Button onClick={() => setShowIngredients(!showIngredients)}>Edytuj sładniki</Button>
                 </div>
             </div>
             {showIngredients && <div className="divide-y-2">
